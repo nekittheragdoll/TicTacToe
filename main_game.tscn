@@ -1,19 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://b07u55wnaxkwa"]
+[gd_scene load_steps=4 format=3 uid="uid://b07u55wnaxkwa"]
 
 [ext_resource type="Script" path="res://GC_Field.cs" id="1_0f4u8"]
+[ext_resource type="Texture2D" uid="uid://k66yvh5dopv3" path="res://BoardBG.png" id="1_8hu0u"]
+[ext_resource type="Texture2D" uid="uid://bs31me840mcac" path="res://peepowtf.png" id="3_l6bsb"]
 
 [node name="Main_Game" type="Node2D"]
 
-[node name="GC_Field" type="GridContainer" parent="."]
-offset_left = 253.0
-offset_top = 71.0
-offset_right = 910.0
-offset_bottom = 555.0
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+offset_left = 146.0
+offset_top = 24.0
+offset_right = 1030.0
+offset_bottom = 608.0
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_8hu0u")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GC_Field" type="GridContainer" parent="AspectRatioContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
 columns = 5
 script = ExtResource("1_0f4u8")
 
 [node name="TextureButton" type="TextureButton" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[connection signal="pressed" from="TextureButton" to="GC_Field" method="_on_texture_button_pressed"]
+offset_left = 119.0
+offset_top = 145.0
+offset_right = 231.0
+offset_bottom = 233.0
+texture_normal = ExtResource("3_l6bsb")
+flip_h = true
