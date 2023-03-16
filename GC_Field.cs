@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 public partial class GC_Field : GridContainer
 {
-	FieldTile[,] Field = new FieldTile[5,5];
+	static int SizeOfField = 5;
+	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
 	// Called when the node enters the scene tree for the first time.
 	bool isPlayer_x = true;
 	public override void _Ready()
 	{
+		this.Columns = SizeOfField;
 		for (int i = 0; i < Field.GetLength(0); i++)
 		{
 			for (int j = 0; j < Field.GetLength(1); j++)
@@ -35,6 +37,7 @@ public partial class GC_Field : GridContainer
 
 	private void TileClicked(FieldTile ft)
 	{
+		if(ft.PieceExists) {return;}
 		ft.PieceExists = true;
 		ft.PlayerIsX = isPlayer_x;
 		GD.Print(isPlayer_x);
