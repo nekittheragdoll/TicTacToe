@@ -9,7 +9,6 @@ namespace TicTacToeResources
         public bool PlayerIsX { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
-        public int Index { get; set; }
     
         public void ActivateTile()
         {
