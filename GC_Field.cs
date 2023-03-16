@@ -5,10 +5,11 @@ using System.Collections.Generic;
 
 public partial class GC_Field : GridContainer
 {
-	static int SizeOfField = 5;
+	public static int SizeOfField = 5;
 	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
 	// Called when the node enters the scene tree for the first time.
-	bool isPlayer_x = true;
+	
+	bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
 	public override void _Ready()
 	{
 		this.Columns = SizeOfField;
