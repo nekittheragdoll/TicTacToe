@@ -7,7 +7,6 @@ public partial class GC_Field : GridContainer
 {
 	public static int SizeOfField = 5;
 	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
-	// Called when the node enters the scene tree for the first time.
 	
 	bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
 	public override void _Ready()
@@ -26,8 +25,8 @@ public partial class GC_Field : GridContainer
 				IgnoreTextureSize = true,
 				StretchMode = TextureButton.StretchModeEnum.Scale,
 
-				PosX = i,
-				PosY = j,
+				PosX = j,
+				PosY = i,
 			};
 			ft.Pressed += () => TileClicked(ft);
 			AddChild(ft);
@@ -41,18 +40,41 @@ public partial class GC_Field : GridContainer
 		if(ft.PieceExists) {return;}
 		ft.PieceExists = true;
 		ft.PlayerIsX = isPlayer_x;
-		GD.Print(isPlayer_x);
 		ft.ActivateTile();
 		isPlayer_x = !isPlayer_x;
-		CheckSurrounding(ft);
+		if (DidYouDoIt(ft) != null)
+		{
+			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player Y Won");
+		}
+		;
 	}
 
-	private void CheckSurrounding(FieldTile ftvar){
+	public FieldTile[] DidYouDoIt(FieldTile ftvar){
+		int streak = 0;
 
-	}
+		for (int i = 0; i < SizeOfField; i++)
+		{
+			if (Field[ftvar.PosY, i].PlayerIsX == ftvar.PlayerIsX)
+			{
+				streak++;
+			}
+			else streak = 0;
+			if (streak >= 5) { return new FieldTile[2] { Field[ftvar.PosY, i - streak], Field[ftvar.PosY, i] }; }
+		}
+		streak = 0;
+		for (int i = 0; i < SizeOfField; i++)
+		{
+
+			if (Field[i, ftvar.PosX].PlayerIsX == ftvar.PlayerIsX) streak++;
+			else streak = 0;
+			if (streak >= 5) { return new FieldTile[2] { Field[i - streak, ftvar.PosX], Field[i, ftvar.PosX] }; }
+		}
+
+		return null;
+	}		
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+	// public override void _Process(double delta)
+	// {
+	// }
 }
