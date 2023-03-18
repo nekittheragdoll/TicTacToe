@@ -70,6 +70,60 @@ public partial class GC_Field : GridContainer
 			if (streak >= 5) { return new FieldTile[2] { Field[i - streak + 1, ftvar.PosX], Field[i, ftvar.PosX] }; }
 		}
 
+
+		int[] diagoffset = {0, 0};
+		streak = 0;
+
+		if (ftvar.PosY > ftvar.PosX)
+		{
+			diagoffset[0] = ftvar.PosY - ftvar.PosX;
+			diagoffset[1] = 0;
+		}
+		else
+		{
+			diagoffset[0] = 0;
+			diagoffset[1] = ftvar.PosX - ftvar.PosY;
+		}
+
+
+		for (int i = 0; i + diagoffset[0] + diagoffset[1] < SizeOfField; i++)
+		{
+
+			if ((Field[i + diagoffset[0], i + diagoffset[1]].PlayerIsX == ftvar.PlayerIsX) && Field[i + diagoffset[0], i + diagoffset[1]].PieceExists) streak++;
+			else streak = 0;
+			if (streak >= 5) { return new FieldTile[2] { Field[i + diagoffset[0] - streak + 1, i + diagoffset[1] - streak + 1], Field[i + diagoffset[0], i + diagoffset[1]] }; }
+		}
+
+		if (SizeOfField-1 - ftvar.PosY > ftvar.PosX)
+		{
+			diagoffset[0] = SizeOfField-1 - ftvar.PosY - ftvar.PosX;
+			diagoffset[1] = 0;
+		}
+		else
+		{
+			diagoffset[0] = 0;
+			diagoffset[1] = ftvar.PosX - (SizeOfField-1 - ftvar.PosY);
+		}
+
+		int offset = Math.Abs(ftvar.PosX - ftvar.PosY);
+		streak = 0;
+		string dbgforY = "Y series: ";
+		string dbgforX = "X series: ";
+		for (int i = 0, j = SizeOfField-1; i + diagoffset[1] < SizeOfField && j - diagoffset[0] >= 0 ; i++, j--)
+		{
+			if ((Field[j- diagoffset[0], i + diagoffset[1]].PlayerIsX == ftvar.PlayerIsX) && Field[j- diagoffset[0], i + diagoffset[1]].PieceExists) streak++;
+			else streak = 0;
+			if (streak >= 5) { return new FieldTile[2] { Field[j - diagoffset[0] + streak - 1, i + diagoffset[1] - streak + 1], Field[j- diagoffset[0], i + diagoffset[1]] }; }
+
+			dbgforX += (i).ToString();
+			dbgforY += (j- diagoffset[0]).ToString();
+
+		}
+
+		GD.Print(dbgforX);
+		GD.Print(dbgforY);
+
+
 		return null;
 	}		
 
