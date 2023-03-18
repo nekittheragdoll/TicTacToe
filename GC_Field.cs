@@ -44,7 +44,7 @@ public partial class GC_Field : GridContainer
 		isPlayer_x = !isPlayer_x;
 		if (DidYouDoIt(ft) != null)
 		{
-			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player Y Won");
+			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");
 		}
 		;
 	}
@@ -54,20 +54,20 @@ public partial class GC_Field : GridContainer
 
 		for (int i = 0; i < SizeOfField; i++)
 		{
-			if (Field[ftvar.PosY, i].PlayerIsX == ftvar.PlayerIsX)
+			if ((Field[ftvar.PosY, i].PlayerIsX == ftvar.PlayerIsX) && Field[ftvar.PosY, i].PieceExists)
 			{
 				streak++;
 			}
 			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[ftvar.PosY, i - streak], Field[ftvar.PosY, i] }; }
+			if (streak >= 5) { return new FieldTile[2] { Field[ftvar.PosY, (i - streak + 1)], Field[ftvar.PosY, i] }; }
 		}
 		streak = 0;
 		for (int i = 0; i < SizeOfField; i++)
 		{
 
-			if (Field[i, ftvar.PosX].PlayerIsX == ftvar.PlayerIsX) streak++;
+			if ((Field[i, ftvar.PosX].PlayerIsX == ftvar.PlayerIsX) && Field[i, ftvar.PosX].PieceExists) streak++;
 			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[i - streak, ftvar.PosX], Field[i, ftvar.PosX] }; }
+			if (streak >= 5) { return new FieldTile[2] { Field[i - streak + 1, ftvar.PosX], Field[i, ftvar.PosX] }; }
 		}
 
 		return null;
