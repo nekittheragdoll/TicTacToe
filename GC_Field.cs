@@ -42,87 +42,61 @@ public partial class GC_Field : GridContainer
 		ft.PlayerIsX = isPlayer_x;
 		ft.ActivateTile();
 		isPlayer_x = !isPlayer_x;
-		if (DidYouDoIt(ft) != null)
+		FieldTile[] twopoints = DidYouDoIt(ft);
+		if (twopoints != null)
 		{
 			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");
+			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY ));
 		}
 		;
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
-		int streak = 0;
 
-		for (int i = 0; i < SizeOfField; i++)
+		bool PlayerX = ftvar.PlayerIsX;
+		int Y = ftvar.PosY;
+		int X = ftvar.PosX; 
+		int[] streak = {0,0,0,0};
+		FieldTile[] f_span = new FieldTile[4];
+
+		for (int i = 0; i < 10; i++)
 		{
-			if ((Field[ftvar.PosY, i].PlayerIsX == ftvar.PlayerIsX) && Field[ftvar.PosY, i].PieceExists)
+			//sizeoffield => sizeofX
+			if (X - 4 + i < SizeOfField && X - 4 + i >= 0)
 			{
-				streak++;
+				if (Field[Y, X - 4 + i].PieceExists && Field[Y, X - 4 + i].PlayerIsX == PlayerX)
+				{ streak[0]++; f_span[0] = Field[Y, X - 4 + i]; }
+				else streak[0] = 0;
 			}
-			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[ftvar.PosY, (i - streak + 1)], Field[ftvar.PosY, i] }; }
+			if (streak[0] >= 5)
+			{
+				return new FieldTile[] { Field[Y, X - 4 + i - streak[0] + 1], Field[Y, X - 4 + i] };
+			}
+			//sizeoffield => sizeofY
+			if (Y - 4 + i < SizeOfField && Y - 4 + i >= 0)
+			{
+				if (Field[Y - 4 + i, X].PieceExists && Field[Y - 4 + i, X].PlayerIsX == PlayerX)
+				{ streak[1]++; f_span[1] = Field[Y - 4 + i, X]; }
+				else streak[1] = 0;
+			}
+			if (streak[1] >= 5) { return new FieldTile[] { Field[Y - 4 + i - streak[1] + 1, X], Field[Y - 4 + i, X] }; }
+			//sizeoffield => sizeofY for Y and sizeofX for X
+			if (Y - 4 + i < SizeOfField && Y - 4 + i >= 0 && X - 4 + i < SizeOfField && X - 4 + i >= 0)
+			{
+				if (Field[Y - 4 + i, X - 4 + i].PieceExists && Field[Y - 4 + i, X - 4 + i].PlayerIsX == PlayerX)
+				{ streak[2]++; f_span[2] = Field[Y - 4 + i, X - 4 + i]; }
+				else streak[2] = 0;
+			}
+			if (streak[2] >= 5) { return new FieldTile[] { Field[Y - 4 + i - streak[2] + 1, X - 4 + i - streak[2] + 1], Field[Y - 4 + i, X - 4 + i] }; }
+			//sizeoffield => sizeofY for Y and sizeofX for X
+			if (Y + 4 - i < SizeOfField && Y + 4 - i >= 0 && X - 4 + i < SizeOfField && X - 4 + i >= 0)
+			{
+				if (Field[Y + 4 - i, X - 4 + i].PieceExists && Field[Y + 4 - i, X - 4 + i].PlayerIsX == PlayerX)
+				{ streak[3]++; f_span[3] = Field[Y + 4 - i, X - 4 + i]; }
+				else streak[3] = 0;
+			}
+			if (streak[3] >= 5) { return new FieldTile[] { Field[Y + 4 - i + streak[3] - 1, X - 4 + i - streak[3] + 1], Field[Y + 4 - i, X - 4 + i] }; }
 		}
-		streak = 0;
-		for (int i = 0; i < SizeOfField; i++)
-		{
-
-			if ((Field[i, ftvar.PosX].PlayerIsX == ftvar.PlayerIsX) && Field[i, ftvar.PosX].PieceExists) streak++;
-			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[i - streak + 1, ftvar.PosX], Field[i, ftvar.PosX] }; }
-		}
-
-
-		int[] diagoffset = {0, 0};
-		streak = 0;
-
-		if (ftvar.PosY > ftvar.PosX)
-		{
-			diagoffset[0] = ftvar.PosY - ftvar.PosX;
-			diagoffset[1] = 0;
-		}
-		else
-		{
-			diagoffset[0] = 0;
-			diagoffset[1] = ftvar.PosX - ftvar.PosY;
-		}
-
-
-		for (int i = 0; i + diagoffset[0] + diagoffset[1] < SizeOfField; i++)
-		{
-
-			if ((Field[i + diagoffset[0], i + diagoffset[1]].PlayerIsX == ftvar.PlayerIsX) && Field[i + diagoffset[0], i + diagoffset[1]].PieceExists) streak++;
-			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[i + diagoffset[0] - streak + 1, i + diagoffset[1] - streak + 1], Field[i + diagoffset[0], i + diagoffset[1]] }; }
-		}
-
-		if (SizeOfField-1 - ftvar.PosY > ftvar.PosX)
-		{
-			diagoffset[0] = SizeOfField-1 - ftvar.PosY - ftvar.PosX;
-			diagoffset[1] = 0;
-		}
-		else
-		{
-			diagoffset[0] = 0;
-			diagoffset[1] = ftvar.PosX - (SizeOfField-1 - ftvar.PosY);
-		}
-
-		int offset = Math.Abs(ftvar.PosX - ftvar.PosY);
-		streak = 0;
-		string dbgforY = "Y series: ";
-		string dbgforX = "X series: ";
-		for (int i = 0, j = SizeOfField-1; i + diagoffset[1] < SizeOfField && j - diagoffset[0] >= 0 ; i++, j--)
-		{
-			if ((Field[j- diagoffset[0], i + diagoffset[1]].PlayerIsX == ftvar.PlayerIsX) && Field[j- diagoffset[0], i + diagoffset[1]].PieceExists) streak++;
-			else streak = 0;
-			if (streak >= 5) { return new FieldTile[2] { Field[j - diagoffset[0] + streak - 1, i + diagoffset[1] - streak + 1], Field[j- diagoffset[0], i + diagoffset[1]] }; }
-
-			dbgforX += (i).ToString();
-			dbgforY += (j- diagoffset[0]).ToString();
-
-		}
-
-		GD.Print(dbgforX);
-		GD.Print(dbgforY);
-
 
 		return null;
 	}		
