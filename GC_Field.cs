@@ -8,7 +8,7 @@ public partial class GC_Field : GridContainer
 	public static int SizeOfField = 5;
 	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
 	
-	bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
+	public static bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
 	public override void _Ready()
 	{
 		this.Columns = SizeOfField;
@@ -49,6 +49,7 @@ public partial class GC_Field : GridContainer
 			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY ));
 		}
 		;
+		main_game.ChangeLabel(isPlayer_x);
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
@@ -57,7 +58,7 @@ public partial class GC_Field : GridContainer
 		int Y = ftvar.PosY;
 		int X = ftvar.PosX; 
 		int[] streak = {0,0,0,0};
-		FieldTile[] f_span = new FieldTile[4];
+		FieldTile[] f_span = new FieldTile[4]; //remembers last tile in a streak
 
 		for (int i = 0; i < 10; i++)
 		{
