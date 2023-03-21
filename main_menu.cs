@@ -6,7 +6,6 @@ public partial class main_menu : Control
 	// Called when the node enters the scene tree for the first time.
 	SpinBox sb_fieldSize;
 	Button btn_setSize;
-
 	LineEdit le_p1;
 	LineEdit le_p2;
 	public override void _Ready()

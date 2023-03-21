@@ -9,6 +9,7 @@ public partial class GC_Field : GridContainer
 	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
 	
 	public static bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
+	public static int winnerIndic = 0; // 0 --> no winner, 1 --> X won, 2 --> O won
 	public override void _Ready()
 	{
 		this.Columns = SizeOfField;
@@ -37,7 +38,7 @@ public partial class GC_Field : GridContainer
 
 	private void TileClicked(FieldTile ft)
 	{
-		if(ft.PieceExists) {return;}
+		if(ft.PieceExists || winnerIndic != 0) {return;}
 		ft.PieceExists = true;
 		ft.PlayerIsX = isPlayer_x;
 		ft.ActivateTile();
@@ -47,9 +48,11 @@ public partial class GC_Field : GridContainer
 		{
 			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");
 			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY ));
+		
+			winnerIndic = ft.PlayerIsX ? 1 : 2;
 		}
 		;
-		main_game.ChangeLabel(isPlayer_x);
+		main_game.ChangeTurnLabel(isPlayer_x, winnerIndic);
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
@@ -101,6 +104,20 @@ public partial class GC_Field : GridContainer
 
 		return null;
 	}		
+
+	public static void resetField()
+	{
+		for (int i = 0; i < SizeOfField; i++)
+		{
+			for (int j = 0; j < SizeOfField; j++)
+			{
+				//Field[i,j].PieceExists = false;
+				//Field[i,j].PlayerIsX = false;				
+				//Field[i,j].TextureNormal = ResourceLoader.Load("res://btn_empty.png") as Texture2D;
+			}
+		}
+
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	// public override void _Process(double delta)
