@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_csmpk")
 
-[node name="Label" type="Label" parent="."]
+[node name="lbl_fieldSize" type="Label" parent="."]
 layout_mode = 0
 offset_left = 76.0
 offset_top = 41.0
@@ -55,7 +55,7 @@ offset_right = 837.0
 offset_bottom = 257.0
 text = "Player2"
 
-[node name="Label2" type="Label" parent="."]
+[node name="lbl_p2" type="Label" parent="."]
 layout_mode = 0
 offset_left = 687.0
 offset_top = 181.0
@@ -63,10 +63,19 @@ offset_right = 840.0
 offset_bottom = 208.0
 text = "Player2 (O)"
 
-[node name="Label" type="Label" parent="Label2"]
+[node name="lbl_p1" type="Label" parent="lbl_p2"]
 layout_mode = 0
 offset_left = 6.0
 offset_top = -95.0
 offset_right = 147.0
 offset_bottom = -66.0
 text = "Player1 (X)"
+
+[node name="btn_lastNames" type="Button" parent="."]
+layout_mode = 0
+offset_left = 689.0
+offset_top = 288.0
+offset_right = 835.0
+offset_bottom = 330.0
+text = "Load last 
+player names"

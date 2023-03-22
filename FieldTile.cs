@@ -12,15 +12,8 @@ namespace TicTacToeResources
     
         public void ActivateTile()
         {
-            if (PlayerIsX)
-            {
-                this.TextureNormal = ResourceLoader.Load("res://x_sprite.png") as Texture2D;
-            }
-            else
-            {
-                this.TextureNormal = ResourceLoader.Load("res://o_sprite.png") as Texture2D;
-            }
-           
+            this.TextureNormal = PlayerIsX ? ResourceLoader.Load("res://x_sprite.png") as Texture2D :
+                                             ResourceLoader.Load("res://o_sprite.png") as Texture2D;           
         }
     }
     
