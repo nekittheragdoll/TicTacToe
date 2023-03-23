@@ -32,7 +32,7 @@ public partial class main_menu : Control
 		else{
 		main_game.p1name = le_p1.Text;
 		main_game.p2name = le_p2.Text;}
-		GC_Field.SizeOfField = Convert.ToInt32(sb_fieldSize.Value);
+		GlobalParameters.SizeOfField = Convert.ToInt32(sb_fieldSize.Value);
 		GetTree().ChangeSceneToFile("res://main_game.tscn");
 	}
 

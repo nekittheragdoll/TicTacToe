@@ -15,7 +15,7 @@ public partial class main_game : Node2D
 	public override void _Ready()
 	{
 		lbl_turnIndic = GetNode<Label>("lbl_turnIndic");		
-		lbl_turnIndic.Text = (GC_Field.isPlayer_x) ? "it is " + p1name + "'s turn (X)" : 
+		lbl_turnIndic.Text = (GlobalParameters.isPlayer_x) ? "it is " + p1name + "'s turn (X)" : 
 													 "it is " + p2name + "'s turn (O)";
 		
 		btn_rst = GetNode<Button>("btn_rst");

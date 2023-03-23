@@ -6,13 +6,15 @@ using System.Collections.Generic;
 public partial class GC_Field : GridContainer
 {
 	public static int SizeOfField = 5;
-	FieldTile[,] Field = new FieldTile[SizeOfField,SizeOfField];
+	FieldTile[,] Field = new FieldTile[GlobalParameters.SizeOfField, GlobalParameters.SizeOfField];
 	
-	public static bool isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
+	//public static bool isPlayer_x = GlobalParameters.StartingPlayerIsX;
+	
 	public static int winnerIndic = 0; // 0 --> no winner, 1 --> X won, 2 --> O won
 	public override void _Ready()
 	{
-		this.Columns = SizeOfField;
+		GlobalParameters G = GetNode<GlobalParameters>("/root/GlobalParameters");
+		this.Columns = GlobalParameters.SizeOfField;
 		for (int i = 0; i < Field.GetLength(0); i++)
 		{
 			for (int j = 0; j < Field.GetLength(1); j++)
@@ -38,21 +40,21 @@ public partial class GC_Field : GridContainer
 
 	private void TileClicked(FieldTile ft)
 	{
-		if(ft.PieceExists || winnerIndic != 0) {return;}
+		if(ft.PieceExists || GlobalParameters.winnerIndic != 0) {return;}
 		ft.PieceExists = true;
-		ft.PlayerIsX = isPlayer_x;
+		ft.PlayerIsX = GlobalParameters.isPlayer_x;
 		ft.ActivateTile();
-		isPlayer_x = !isPlayer_x;
-		FieldTile[] twopoints = DidYouDoIt(ft);
+		GlobalParameters.isPlayer_x = !GlobalParameters.isPlayer_x;
+		FieldTile[] twopoints = DidYouDoIt(ft);		// 'twopoints' are starting and ending points of five consecutive marks
 		if (twopoints != null)
 		{
 			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");
 			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY ));
 		
-			winnerIndic = ft.PlayerIsX ? 1 : 2;
+			GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
 		}
 		;
-		main_game.ChangeTurnLabel(isPlayer_x, winnerIndic);
+		main_game.ChangeTurnLabel(GlobalParameters.isPlayer_x, GlobalParameters.winnerIndic);
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
@@ -65,8 +67,8 @@ public partial class GC_Field : GridContainer
 
 		for (int i = 0; i < 10; i++)
 		{
-			//sizeoffield => sizeofX
-			if (X - 4 + i < SizeOfField && X - 4 + i >= 0)
+			//GlobalParameters.SizeOfField => sizeofX
+			if (X - 4 + i < GlobalParameters.SizeOfField && X - 4 + i >= 0)
 			{
 				if (Field[Y, X - 4 + i].PieceExists && Field[Y, X - 4 + i].PlayerIsX == PlayerX)
 				{ streak[0]++; f_span[0] = Field[Y, X - 4 + i]; }
@@ -76,24 +78,24 @@ public partial class GC_Field : GridContainer
 			{
 				return new FieldTile[] { Field[Y, X - 4 + i - streak[0] + 1], Field[Y, X - 4 + i] };
 			}
-			//sizeoffield => sizeofY
-			if (Y - 4 + i < SizeOfField && Y - 4 + i >= 0)
+			//GlobalParameters.SizeOfField => sizeofY
+			if (Y - 4 + i < GlobalParameters.SizeOfField && Y - 4 + i >= 0)
 			{
 				if (Field[Y - 4 + i, X].PieceExists && Field[Y - 4 + i, X].PlayerIsX == PlayerX)
 				{ streak[1]++; f_span[1] = Field[Y - 4 + i, X]; }
 				else streak[1] = 0;
 			}
 			if (streak[1] >= 5) { return new FieldTile[] { Field[Y - 4 + i - streak[1] + 1, X], Field[Y - 4 + i, X] }; }
-			//sizeoffield => sizeofY for Y and sizeofX for X
-			if (Y - 4 + i < SizeOfField && Y - 4 + i >= 0 && X - 4 + i < SizeOfField && X - 4 + i >= 0)
+			//GlobalParameters.SizeOfField => sizeofY for Y and sizeofX for X
+			if (Y - 4 + i < GlobalParameters.SizeOfField && Y - 4 + i >= 0 && X - 4 + i < GlobalParameters.SizeOfField && X - 4 + i >= 0)
 			{
 				if (Field[Y - 4 + i, X - 4 + i].PieceExists && Field[Y - 4 + i, X - 4 + i].PlayerIsX == PlayerX)
 				{ streak[2]++; f_span[2] = Field[Y - 4 + i, X - 4 + i]; }
 				else streak[2] = 0;
 			}
 			if (streak[2] >= 5) { return new FieldTile[] { Field[Y - 4 + i - streak[2] + 1, X - 4 + i - streak[2] + 1], Field[Y - 4 + i, X - 4 + i] }; }
-			//sizeoffield => sizeofY for Y and sizeofX for X
-			if (Y + 4 - i < SizeOfField && Y + 4 - i >= 0 && X - 4 + i < SizeOfField && X - 4 + i >= 0)
+			//GlobalParameters.SizeOfField => sizeofY for Y and sizeofX for X
+			if (Y + 4 - i < GlobalParameters.SizeOfField && Y + 4 - i >= 0 && X - 4 + i < GlobalParameters.SizeOfField && X - 4 + i >= 0)
 			{
 				if (Field[Y + 4 - i, X - 4 + i].PieceExists && Field[Y + 4 - i, X - 4 + i].PlayerIsX == PlayerX)
 				{ streak[3]++; f_span[3] = Field[Y + 4 - i, X - 4 + i]; }
@@ -107,9 +109,9 @@ public partial class GC_Field : GridContainer
 
 	public static void resetField()
 	{
-		for (int i = 0; i < SizeOfField; i++)
+		for (int i = 0; i < GlobalParameters.SizeOfField; i++)
 		{
-			for (int j = 0; j < SizeOfField; j++)
+			for (int j = 0; j < GlobalParameters.SizeOfField; j++)
 			{
 				//Field[i,j].PieceExists = false;
 				//Field[i,j].PlayerIsX = false;				
