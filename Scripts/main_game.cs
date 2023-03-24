@@ -29,15 +29,9 @@ public partial class main_game : Node2D
 	{
 		String[] names = {p1name, p2name};
 		File.WriteAllLinesAsync("LastNames.txt", names);
+		GlobalParameters.SaveNames();
 		GetTree().Quit();
 	}
 
-	// public static void ChangeTurnLabel(bool playerx, int winner)
-	// {
-	//     if (winner == 0)
-	//         lbl_turnIndic.Text = (playerx) ? "it is " + p1name + "'s turn (X)" :
-	//                                          "it is " + p2name + "'s turn (O)";
-	//     else
-	//         lbl_turnIndic.Text = (winner == 1) ? p1name + " (X) won!" : p2name + " (O) won!";
-	// }
+
 }
