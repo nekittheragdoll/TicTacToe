@@ -11,18 +11,18 @@ config_version=5
 [application]
 
 config/name="TicTacToe"
-run/main_scene="res://control.tscn"
+run/main_scene="res://Scenes/control.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalParameters="*res://GlobalParameters.cs"
+GlobalParameters="*res://Scripts/GlobalParameters.cs"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/size/initial_position=Vector2i(0, 100)
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"

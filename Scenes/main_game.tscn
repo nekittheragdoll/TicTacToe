@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b07u55wnaxkwa"]
+[gd_scene load_steps=7 format=3 uid="uid://chfqqj4anw4ni"]
 
-[ext_resource type="Script" path="res://GC_Field.cs" id="1_0f4u8"]
-[ext_resource type="Texture2D" uid="uid://k66yvh5dopv3" path="res://BoardBG.png" id="1_8hu0u"]
-[ext_resource type="Script" path="res://main_game.cs" id="1_hch35"]
-[ext_resource type="Texture2D" uid="uid://bs31me840mcac" path="res://peepowtf.png" id="3_l6bsb"]
+[ext_resource type="Script" path="res://Scripts/main_game.cs" id="1_af6te"]
+[ext_resource type="Texture2D" uid="uid://k66yvh5dopv3" path="res://Images/BoardBG.png" id="2_rp3m8"]
+[ext_resource type="Script" path="res://Scripts/GC_Field.cs" id="3_s721u"]
+[ext_resource type="Texture2D" uid="uid://bs31me840mcac" path="res://Images/peepowtf.png" id="4_wkuon"]
+[ext_resource type="Script" path="res://Scripts/lbl_turnIndic.cs" id="5_kkk6a"]
+[ext_resource type="Script" path="res://Scripts/btn_rst.cs" id="6_83mki"]
 
 [node name="Main_Game" type="Node2D"]
-script = ExtResource("1_hch35")
+script = ExtResource("1_af6te")
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 anchors_preset = 8
@@ -16,8 +18,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 256.0
 offset_top = 64.0
-offset_right = 1664.0
-offset_bottom = 1024.0
+offset_right = 1088.0
+offset_bottom = 640.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -26,7 +28,7 @@ metadata/_edit_group_ = true
 
 [node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
 layout_mode = 2
-texture = ExtResource("1_8hu0u")
+texture = ExtResource("2_rp3m8")
 expand_mode = 1
 stretch_mode = 1
 
@@ -42,14 +44,14 @@ layout_mode = 2
 theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 8
-script = ExtResource("1_0f4u8")
+script = ExtResource("3_s721u")
 
 [node name="TextureButton" type="TextureButton" parent="."]
 offset_left = 64.0
 offset_top = 192.0
 offset_right = 176.0
 offset_bottom = 269.0
-texture_normal = ExtResource("3_l6bsb")
+texture_normal = ExtResource("4_wkuon")
 flip_h = true
 
 [node name="lbl_turnIndic" type="Label" parent="."]
@@ -57,17 +59,21 @@ offset_left = 21.0
 offset_top = 360.0
 offset_right = 164.0
 offset_bottom = 544.0
+script = ExtResource("5_kkk6a")
 
 [node name="btn_rst" type="Button" parent="."]
-offset_left = 23.0
-offset_top = 712.0
-offset_right = 168.0
-offset_bottom = 764.0
+offset_left = 64.0
+offset_top = 448.0
+offset_right = 256.0
+offset_bottom = 512.0
 text = "RESET"
+script = ExtResource("6_83mki")
 
 [node name="btn_quit" type="Button" parent="."]
-offset_left = 23.0
-offset_top = 793.0
-offset_right = 168.0
-offset_bottom = 849.0
+offset_left = 64.0
+offset_top = 576.0
+offset_right = 256.0
+offset_bottom = 640.0
 text = "Save & Quit"
+
+[connection signal="BoardStatusChanged" from="AspectRatioContainer/MarginContainer/GC_Field" to="lbl_turnIndic" method="_on_gc_field_board_status_changed"]

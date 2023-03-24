@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 public partial class GC_Field : GridContainer
 {
-	public static int SizeOfField = 5;
+	[Signal] public delegate void BoardStatusChangedEventHandler(int state);	// 1 - player X playing ; 2 - player O playing; 3 - player X won; 4 - player O Won
 	FieldTile[,] Field = new FieldTile[GlobalParameters.SizeOfField, GlobalParameters.SizeOfField];
-	
-	//public static bool isPlayer_x = GlobalParameters.StartingPlayerIsX;
-	
-	public static int winnerIndic = 0; // 0 --> no winner, 1 --> X won, 2 --> O won
+
+
+	//My TTT dream does not include the state, which looks like a bubblebum, and tastes like a bubblebum
+	enum GameState { XisPlaying, OisPlaying, GameOver }
+	GameState CurrentState = GameState.GameOver;
+
+
 	public override void _Ready()
 	{
-		GlobalParameters G = GetNode<GlobalParameters>("/root/GlobalParameters");
 		this.Columns = GlobalParameters.SizeOfField;
 		for (int i = 0; i < Field.GetLength(0); i++)
 		{
@@ -24,7 +26,7 @@ public partial class GC_Field : GridContainer
 				SizeFlagsVertical = SizeFlags.ExpandFill,
 				Scale = new Vector2(0.05f, 0.05f),
 				Visible = true,
-				TextureNormal = ResourceLoader.Load("res://btn_empty.png") as Texture2D,
+				TextureNormal = ResourceLoader.Load("res://Images/btn_empty.png") as Texture2D,
 				IgnoreTextureSize = true,
 				StretchMode = TextureButton.StretchModeEnum.Scale,
 
@@ -36,25 +38,43 @@ public partial class GC_Field : GridContainer
 			Field[i,j] = ft;
 			}			
 		}
+		bool rndTrue = (new Random()).Next(1,10) > 5;
+		CurrentState = rndTrue ? GameState.XisPlaying : GameState.OisPlaying;
+		EmitSignal(SignalName.BoardStatusChanged, rndTrue ? 1 : 2);
+		//CurrentState = (GlobalParameters.isPlayer_x) ? GameState.XisPlaying : GameState.OisPlaying;
 	}
 
 	private void TileClicked(FieldTile ft)
 	{
-		if(ft.PieceExists || GlobalParameters.winnerIndic != 0) {return;}
-		ft.PieceExists = true;
-		ft.PlayerIsX = GlobalParameters.isPlayer_x;
-		ft.ActivateTile();
-		GlobalParameters.isPlayer_x = !GlobalParameters.isPlayer_x;
+		if(ft.PieceExists || CurrentState == GameState.GameOver) return;
+		//ft.PieceExists = true;
+		//ft.PlayerIsX = GlobalParameters.isPlayer_x;
+		if (CurrentState == GameState.XisPlaying)
+		{
+			ft.ActivateTile(true);
+			//GlobalParameters.isPlayer_x = true;
+			EmitSignal(SignalName.BoardStatusChanged, 2);
+			CurrentState = GameState.OisPlaying;
+		}
+		else
+		{
+			ft.ActivateTile(false);
+			//GlobalParameters.isPlayer_x = false;
+			EmitSignal(SignalName.BoardStatusChanged, 1);
+			CurrentState = GameState.XisPlaying;
+		}
+		//GlobalParameters.isPlayer_x = !GlobalParameters.isPlayer_x;
 		FieldTile[] twopoints = DidYouDoIt(ft);		// 'twopoints' are starting and ending points of five consecutive marks
 		if (twopoints != null)
 		{
-			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");
-			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY ));
+			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");	//#debug func#
+			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY )); //#debug func#
 		
-			GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
+			//GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
+			EmitSignal(SignalName.BoardStatusChanged, ft.PlayerIsX ? 3 : 4);
+			CurrentState = GameState.GameOver;
 		}
-		;
-		main_game.ChangeTurnLabel(GlobalParameters.isPlayer_x, GlobalParameters.winnerIndic);
+		//main_game.ChangeTurnLabel(GlobalParameters.isPlayer_x, GlobalParameters.winnerIndic);
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
@@ -107,19 +127,8 @@ public partial class GC_Field : GridContainer
 		return null;
 	}		
 
-	public static void resetField()
-	{
-		for (int i = 0; i < GlobalParameters.SizeOfField; i++)
-		{
-			for (int j = 0; j < GlobalParameters.SizeOfField; j++)
-			{
-				//Field[i,j].PieceExists = false;
-				//Field[i,j].PlayerIsX = false;				
-				//Field[i,j].TextureNormal = ResourceLoader.Load("res://btn_empty.png") as Texture2D;
-			}
-		}
 
-	}
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	// public override void _Process(double delta)

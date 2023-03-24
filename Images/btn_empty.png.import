@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://k66yvh5dopv3"
-path="res://.godot/imported/BoardBG.png-8c51507d167ac72e82a0de32df1d9ac8.ctex"
+uid="uid://d0v7domxfycp5"
+path="res://.godot/imported/btn_empty.png-2c3acfbc51dfb1e64f7d49519eda3c35.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://BoardBG.png"
-dest_files=["res://.godot/imported/BoardBG.png-8c51507d167ac72e82a0de32df1d9ac8.ctex"]
+source_file="res://Images/btn_empty.png"
+dest_files=["res://.godot/imported/btn_empty.png-2c3acfbc51dfb1e64f7d49519eda3c35.ctex"]
 
 [params]
 

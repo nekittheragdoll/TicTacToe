@@ -30,10 +30,10 @@ public partial class main_menu : Control
 		else if(le_p2.Text == ""){
 		main_game.p2name = "Player2";}
 		else{
-		main_game.p1name = le_p1.Text;
-		main_game.p2name = le_p2.Text;}
+		GlobalParameters.PXname = le_p1.Text;
+		GlobalParameters.POname = le_p2.Text;}
 		GlobalParameters.SizeOfField = Convert.ToInt32(sb_fieldSize.Value);
-		GetTree().ChangeSceneToFile("res://main_game.tscn");
+		GetTree().ChangeSceneToFile("res://Scenes/main_game.tscn");
 	}
 
 	public void loadLastNames(){

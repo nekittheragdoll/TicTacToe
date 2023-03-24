@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs31me840mcac"
-path="res://.godot/imported/peepowtf.png-213cce98db225e1f63ea0f8c88c82468.ctex"
+uid="uid://dskwjp5v634cj"
+path="res://.godot/imported/o_sprite.png-ad519a9ea4dfd030066e1f2e02ae0371.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://peepowtf.png"
-dest_files=["res://.godot/imported/peepowtf.png-213cce98db225e1f63ea0f8c88c82468.ctex"]
+source_file="res://Images/o_sprite.png"
+dest_files=["res://.godot/imported/o_sprite.png-ad519a9ea4dfd030066e1f2e02ae0371.ctex"]
 
 [params]
 
