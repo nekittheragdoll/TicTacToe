@@ -31,9 +31,6 @@ public partial class main_game : Node2D
 		File.WriteAllLinesAsync("LastNames.txt", names);
 		GlobalParameters.SaveNames();
 
-		GlobalParameters.AddPlayerToLeaderBoard();
-		GlobalParameters.SaveLeaderBoard();
-
 		GetTree().Quit();
 
 	}

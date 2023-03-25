@@ -45,7 +45,7 @@ public partial class GlobalParameters : Node
 		using var file = FileAccess.Open("res://LeaderBoard.dat", FileAccess.ModeFlags.Write);
 		foreach (var item in LeaderBoardData)
 		{
-			if(item != null)file.StoreLine(String.Format("{0};{1};{2}", item.Index, item.Name, item.TurnCount));
+			if(item != null)file.StoreLine(String.Format("{0};{1}", item.Name, item.TurnCount));
 		}
 	}
 
@@ -56,30 +56,34 @@ public partial class GlobalParameters : Node
 		{
 			if (file.GetPosition() >= file.GetLength()) break;
 			string[] line = file.GetLine().Split(";");
-			Int32.TryParse(line[0], System.Globalization.NumberStyles.Integer, new System.Globalization.CultureInfo("es-ES", false), out int idx);
-			Int32.TryParse(line[2], System.Globalization.NumberStyles.Integer, new System.Globalization.CultureInfo("es-ES", false), out int tc);
-			var name = line[1];
-			LeaderBoardData[i] = new LB_Player(idx, name, tc);
-
+			Int32.TryParse(line[1], System.Globalization.NumberStyles.Integer, new System.Globalization.CultureInfo("es-ES", false), out int tc);
+			var name = line[0];
+			LeaderBoardData[i] = new LB_Player(name, tc);
 		}
 	}
 
-	public static void AddPlayerToLeaderBoard(string name = "Sugoma", int tc = 7){
-		var _arrayLast = GlobalParameters.LeaderBoardData.Length-1;
+	public static void AddPlayerToLeaderBoard(bool pisx, int tc = 7)
+	{
+		var _arrayLast = LeaderBoardData.Length - 1;
 
-		if(GlobalParameters.LeaderBoardData[_arrayLast]== null || GlobalParameters.LeaderBoardData[_arrayLast].TurnCount > tc) GlobalParameters.LeaderBoardData[_arrayLast] = new LB_Player(_arrayLast+1, name, tc);
-		GlobalParameters.LeaderBoardData.Where(x => x != null).OrderBy(x => x.TurnCount);
+		for (int i = 0; i < LeaderBoardData.Length; i++)
+		{
+			if (LeaderBoardData[i] == null || (i >= _arrayLast && LeaderBoardData[_arrayLast].TurnCount > tc))
+			{
+				LeaderBoardData[i] = new LB_Player(pisx ? PXname : POname, tc);
+				break;
+			}
+		}
+		LeaderBoardData = LeaderBoardData.Where(x => x != null).OrderBy(x => x.TurnCount).ToArray();
 	}
 }
 
 public class LB_Player
 {	
-	public int Index {get; set;}
 	public string Name { get; set;}
 	public int TurnCount { get; set; }
-	public LB_Player(int idx, string name, int t_count)
+	public LB_Player(string name, int t_count)
 	{
-		Index = idx;
 		Name = name;
 		TurnCount = t_count;
 	}

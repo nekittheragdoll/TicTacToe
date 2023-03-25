@@ -2,11 +2,13 @@ using Godot;
 using System;
 using TicTacToeResources;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class GC_Field : GridContainer
 {
 	[Signal] public delegate void BoardStatusChangedEventHandler(int state);	// 1 - player X playing ; 2 - player O playing; 3 - player X won; 4 - player O Won
 	FieldTile[,] Field = new FieldTile[GlobalParameters.SizeOfField, GlobalParameters.SizeOfField];
+	int[] io;
 
 
 	//My TTT dream does not include the state, which looks like a bubblebum, and tastes like a bubblebum
@@ -69,10 +71,18 @@ public partial class GC_Field : GridContainer
 		{
 			GD.Print(ft.PlayerIsX ? "Player X Won" : "Player O Won");	//#debug func#
 			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY )); //#debug func#
-		
-			//GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
+
 			EmitSignal(SignalName.BoardStatusChanged, ft.PlayerIsX ? 3 : 4);
+			//GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
+			//---
+			int cnt = 0;
+			foreach (var item in Field) { if (item.PieceExists && item.PlayerIsX == ft.PlayerIsX) cnt++; }
+			GlobalParameters.AddPlayerToLeaderBoard(ft.PlayerIsX, cnt);
+			GlobalParameters.SaveLeaderBoard();
+			//---
+			
 			CurrentState = GameState.GameOver;
+			
 		}
 		//main_game.ChangeTurnLabel(GlobalParameters.isPlayer_x, GlobalParameters.winnerIndic);
 	}
