@@ -27,10 +27,15 @@ public partial class main_game : Node2D
 
 	public void saveQuit()
 	{
-		String[] names = {p1name, p2name};
+		String[] names = { p1name, p2name };
 		File.WriteAllLinesAsync("LastNames.txt", names);
 		GlobalParameters.SaveNames();
+
+		GlobalParameters.AddPlayerToLeaderBoard();
+		GlobalParameters.SaveLeaderBoard();
+
 		GetTree().Quit();
+
 	}
 
 

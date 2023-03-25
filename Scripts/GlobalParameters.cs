@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class GlobalParameters : Node
 {
@@ -18,6 +19,7 @@ public partial class GlobalParameters : Node
 	public override void _Ready()
 	{		
 		DisplayServer.WindowSetSize(new Vector2I(854, 480));
+		LoadLeaderBoard();
 		//isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
 	}
 
@@ -39,12 +41,46 @@ public partial class GlobalParameters : Node
 		POname = file.GetLine();
 	}
 
-}
-
-	public partial class LB_Player: Node{
-		public int TurnCount {get; set;}
-		LB_Player(string name, int t_count){
-			Name = name;
-			TurnCount = t_count;
+	public static void SaveLeaderBoard(){
+		using var file = FileAccess.Open("res://LeaderBoard.dat", FileAccess.ModeFlags.Write);
+		foreach (var item in LeaderBoardData)
+		{
+			if(item != null)file.StoreLine(String.Format("{0};{1};{2}", item.Index, item.Name, item.TurnCount));
 		}
 	}
+
+	public static void LoadLeaderBoard(){
+		if (!FileAccess.FileExists("res://LeaderBoard.dat")) return;
+		using var file = FileAccess.Open("res://LeaderBoard.dat", FileAccess.ModeFlags.Read);
+		for (int i = 0; i < LeaderBoardData.Length; i++)
+		{
+			if (file.GetPosition() >= file.GetLength()) break;
+			string[] line = file.GetLine().Split(";");
+			Int32.TryParse(line[0], System.Globalization.NumberStyles.Integer, new System.Globalization.CultureInfo("es-ES", false), out int idx);
+			Int32.TryParse(line[2], System.Globalization.NumberStyles.Integer, new System.Globalization.CultureInfo("es-ES", false), out int tc);
+			var name = line[1];
+			LeaderBoardData[i] = new LB_Player(idx, name, tc);
+
+		}
+	}
+
+	public static void AddPlayerToLeaderBoard(string name = "Sugoma", int tc = 7){
+		var _arrayLast = GlobalParameters.LeaderBoardData.Length-1;
+
+		if(GlobalParameters.LeaderBoardData[_arrayLast]== null || GlobalParameters.LeaderBoardData[_arrayLast].TurnCount > tc) GlobalParameters.LeaderBoardData[_arrayLast] = new LB_Player(_arrayLast+1, name, tc);
+		GlobalParameters.LeaderBoardData.Where(x => x != null).OrderBy(x => x.TurnCount);
+	}
+}
+
+public class LB_Player
+{	
+	public int Index {get; set;}
+	public string Name { get; set;}
+	public int TurnCount { get; set; }
+	public LB_Player(int idx, string name, int t_count)
+	{
+		Index = idx;
+		Name = name;
+		TurnCount = t_count;
+	}
+}

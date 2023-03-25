@@ -7,8 +7,10 @@ public partial class main_menu : Control
 	SpinBox sb_fieldSize;
 	Button btn_setSize;
 	Button btn_lastNames;
+	Button btn_showLB;
 	LineEdit le_p1;
 	LineEdit le_p2;
+	PackedScene LeaderBoard = (PackedScene)GD.Load("res://Scenes/LeaderBoard.tscn");
 	public override void _Ready()
 	{
 		sb_fieldSize = GetNode<SpinBox>("sb_fieldSize");
@@ -21,6 +23,9 @@ public partial class main_menu : Control
 
 		btn_lastNames = GetNode<Button>("btn_lastNames");
 		btn_lastNames.Pressed += () => loadLastNames();
+
+		btn_showLB = GetNode<Button>("btn_ShowLeaderBoard");
+		btn_showLB.Pressed += () => AddChild(LeaderBoard.Instantiate());
 	}
 
 	public void startGame()
