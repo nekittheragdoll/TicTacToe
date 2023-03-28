@@ -42,7 +42,7 @@ public partial class main_menu : Control
 	}
 
 	public void loadLastNames(){
-		String[] names = System.IO.File.ReadAllLines("LastNames.txt");
+		String[] names = System.IO.File.ReadAllLines("LastNames.dat");
 		le_p1.Text = names[0];
 		le_p2.Text = names[1];
 	}

@@ -8,7 +8,7 @@ public partial class GC_Field : GridContainer
 {
 	[Signal] public delegate void BoardStatusChangedEventHandler(int state);	// 1 - player X playing ; 2 - player O playing; 3 - player X won; 4 - player O Won
 	FieldTile[,] Field = new FieldTile[GlobalParameters.SizeOfField, GlobalParameters.SizeOfField];
-	int[] io;
+	
 
 
 	//My TTT dream does not include the state, which looks like a bubblebum, and tastes like a bubblebum
