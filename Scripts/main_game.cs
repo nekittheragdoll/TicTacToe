@@ -11,14 +11,7 @@ public partial class main_game : Node2D
 	Button btn_quit;
 	
 	public override void _Ready()
-<<<<<<< HEAD
 	{
-=======
-	{		
-		// btn_rst = GetNode<Button>("btn_rst");
-		// btn_rst.Pressed += () => resetScene();//=> GC_Field.resetField();
-
->>>>>>> 7c564b0326e862d7ae0af2251d76310064e933e9
 		btn_quit = GetNode<Button>("btn_quit");
 		btn_quit.Pressed += () => saveQuit();
 	}
