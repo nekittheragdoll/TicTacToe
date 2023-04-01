@@ -4,8 +4,6 @@ using System.IO;
 
 public partial class main_game : Node2D
 {
-	static Label lbl_turnIndic;
-
 	public static string p1name = "Player1";
 	public static string p2name = "Player2";
 
@@ -13,7 +11,14 @@ public partial class main_game : Node2D
 	Button btn_quit;
 	
 	public override void _Ready()
+<<<<<<< HEAD
 	{
+=======
+	{		
+		// btn_rst = GetNode<Button>("btn_rst");
+		// btn_rst.Pressed += () => resetScene();//=> GC_Field.resetField();
+
+>>>>>>> 7c564b0326e862d7ae0af2251d76310064e933e9
 		btn_quit = GetNode<Button>("btn_quit");
 		btn_quit.Pressed += () => saveQuit();
 	}
@@ -21,7 +26,7 @@ public partial class main_game : Node2D
 	public void saveQuit()
 	{
 		String[] names = { p1name, p2name };
-		File.WriteAllLinesAsync("LastNames.txt", names);
+		//File.WriteAllLinesAsync("LastNames.txt", names);
 		GlobalParameters.SaveNames();
 
 		GetTree().Quit();
