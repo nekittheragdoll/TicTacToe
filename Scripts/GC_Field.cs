@@ -43,29 +43,23 @@ public partial class GC_Field : GridContainer
 		bool rndTrue = (new Random()).Next(1,10) > 5;
 		CurrentState = rndTrue ? GameState.XisPlaying : GameState.OisPlaying;
 		EmitSignal(SignalName.BoardStatusChanged, rndTrue ? 1 : 2);
-		//CurrentState = (GlobalParameters.isPlayer_x) ? GameState.XisPlaying : GameState.OisPlaying;
 	}
 
 	private void TileClicked(FieldTile ft)
 	{
 		if(ft.PieceExists || CurrentState == GameState.GameOver) return;
-		//ft.PieceExists = true;
-		//ft.PlayerIsX = GlobalParameters.isPlayer_x;
 		if (CurrentState == GameState.XisPlaying)
 		{
 			ft.ActivateTile(true);
-			//GlobalParameters.isPlayer_x = true;
 			EmitSignal(SignalName.BoardStatusChanged, 2);
 			CurrentState = GameState.OisPlaying;
 		}
 		else
 		{
 			ft.ActivateTile(false);
-			//GlobalParameters.isPlayer_x = false;
 			EmitSignal(SignalName.BoardStatusChanged, 1);
 			CurrentState = GameState.XisPlaying;
 		}
-		//GlobalParameters.isPlayer_x = !GlobalParameters.isPlayer_x;
 		FieldTile[] twopoints = DidYouDoIt(ft);		// 'twopoints' are starting and ending points of five consecutive marks
 		if (twopoints != null)
 		{
@@ -73,10 +67,9 @@ public partial class GC_Field : GridContainer
 			GD.Print(String.Format("Positions: [{0},{1}] to [{2},{3}]", twopoints[0].PosX, twopoints[0].PosY, twopoints[1].PosX, twopoints[1].PosY )); //#debug func#
 
 			EmitSignal(SignalName.BoardStatusChanged, ft.PlayerIsX ? 3 : 4);
-			//GlobalParameters.winnerIndic = ft.PlayerIsX ? 1 : 2;
 			//---
-			int cnt = 0;
-			foreach (var item in Field) { if (item.PieceExists && item.PlayerIsX == ft.PlayerIsX) cnt++; }
+			int cnt = 0;	// basic counter used in the next line
+			foreach (var item in Field) { if (item.PieceExists && item.PlayerIsX == ft.PlayerIsX) cnt++; } //count how many winning player's pieces are on the board (=turn count)
 			GlobalParameters.AddPlayerToLeaderBoard(ft.PlayerIsX, cnt);
 			GlobalParameters.SaveLeaderBoard();
 			//---
@@ -84,7 +77,16 @@ public partial class GC_Field : GridContainer
 			CurrentState = GameState.GameOver;
 			
 		}
-		//main_game.ChangeTurnLabel(GlobalParameters.isPlayer_x, GlobalParameters.winnerIndic);
+		
+		foreach (var item in Field)
+		{
+			if(!item.PieceExists) return;	//if not activated field exists on the board -> continue game;
+		}
+
+		GD.Print("Draw");
+		EmitSignal(SignalName.BoardStatusChanged, 0);
+		CurrentState = GameState.GameOver;
+
 	}
 
 	public FieldTile[] DidYouDoIt(FieldTile ftvar){
@@ -136,12 +138,4 @@ public partial class GC_Field : GridContainer
 
 		return null;
 	}		
-
-
-
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	// public override void _Process(double delta)
-	// {
-	// }
 }

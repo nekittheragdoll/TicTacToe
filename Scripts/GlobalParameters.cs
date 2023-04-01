@@ -11,16 +11,11 @@ public partial class GlobalParameters : Node
 	public static string PXname = "<X_default_name>";
 	public static string POname = "<O_default_name>";
 
-
-	//public static bool isPlayer_x = true;
-	//public static int winnerIndic = 0; // 0 --> no winner, 1 --> X won, 2 --> O won
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{		
 		DisplayServer.WindowSetSize(new Vector2I(854, 480));
 		LoadLeaderBoard();
-		//isPlayer_x = Convert.ToBoolean((new Random()).Next(0,2));
 	}
 
 	public static void SaveNames(){

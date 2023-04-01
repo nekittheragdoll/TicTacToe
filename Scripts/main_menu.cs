@@ -3,7 +3,6 @@ using System;
 
 public partial class main_menu : Control
 {
-	// Called when the node enters the scene tree for the first time.
 	SpinBox sb_fieldSize;
 	Button btn_setSize;
 	Button btn_lastNames;
@@ -45,10 +44,5 @@ public partial class main_menu : Control
 		String[] names = System.IO.File.ReadAllLines("LastNames.txt");
 		le_p1.Text = names[0];
 		le_p2.Text = names[1];
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 }

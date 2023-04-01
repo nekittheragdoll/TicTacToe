@@ -14,13 +14,6 @@ public partial class main_game : Node2D
 	
 	public override void _Ready()
 	{
-		// lbl_turnIndic = GetNode<Label>("lbl_turnIndic");		
-		// lbl_turnIndic.Text = (GlobalParameters.isPlayer_x) ? "it is " + p1name + "'s turn (X)" : 
-		// 											 "it is " + p2name + "'s turn (O)";
-		
-		// btn_rst = GetNode<Button>("btn_rst");
-		// btn_rst.Pressed += () => resetScene();//=> GC_Field.resetField();
-
 		btn_quit = GetNode<Button>("btn_quit");
 		btn_quit.Pressed += () => saveQuit();
 	}
@@ -32,7 +25,6 @@ public partial class main_game : Node2D
 		GlobalParameters.SaveNames();
 
 		GetTree().Quit();
-
 	}
 
 
