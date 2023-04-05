@@ -24,18 +24,6 @@ public partial class GlobalParameters : Node
 		saveGame.StoreLine(POname);
 	}
 
-	public static void LoadNames()
-	{
-		if (!FileAccess.FileExists("res://LastNames.dat"))
-		{
-			return; // Error! We don't have a save to load.
-		}
-
-		using var file = FileAccess.Open("res://LastNames.dat", FileAccess.ModeFlags.Read);
-		PXname = file.GetLine();
-		POname = file.GetLine();
-	}
-
 	public static void SaveLeaderBoard(){
 		using var file = FileAccess.Open("res://LeaderBoard.dat", FileAccess.ModeFlags.Write);
 		foreach (var item in LeaderBoardData)

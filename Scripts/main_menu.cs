@@ -30,9 +30,9 @@ public partial class main_menu : Control
 	public void startGame()
 	{
 		if(le_p1.Text == ""){
-		main_game.p1name = "Player1";}
+		GlobalParameters.PXname = "Player1";}
 		else if(le_p2.Text == ""){
-		main_game.p2name = "Player2";}
+		GlobalParameters.POname = "Player2";}
 		else{
 		GlobalParameters.PXname = le_p1.Text;
 		GlobalParameters.POname = le_p2.Text;}
@@ -41,8 +41,15 @@ public partial class main_menu : Control
 	}
 
 	public void loadLastNames(){
-		String[] names = System.IO.File.ReadAllLines("LastNames.dat");
-		le_p1.Text = names[0];
-		le_p2.Text = names[1];
+		if (!FileAccess.FileExists("res://LastNames.dat"))
+		{
+			return; // Error! We don't have a save to load.
+		}
+
+		using var file = FileAccess.Open("res://LastNames.dat", FileAccess.ModeFlags.Read);
+		le_p1.Text = file.GetLine();
+		le_p2.Text = file.GetLine();
 	}
+
+
 }

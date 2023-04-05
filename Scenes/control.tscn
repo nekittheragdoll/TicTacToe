@@ -14,10 +14,10 @@ metadata/_edit_lock_ = true
 
 [node name="lbl_fieldSize" type="Label" parent="."]
 layout_mode = 0
-offset_left = 64.0
-offset_top = 64.0
-offset_right = 320.0
-offset_bottom = 192.0
+offset_left = 22.0
+offset_top = 189.0
+offset_right = 278.0
+offset_bottom = 250.0
 text = "Input Playing 
 field size"
 horizontal_alignment = 1
@@ -29,6 +29,7 @@ offset_top = 256.0
 offset_right = 256.0
 offset_bottom = 320.0
 min_value = 5.0
+max_value = 50.0
 value = 5.0
 update_on_text_changed = true
 

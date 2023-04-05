@@ -4,9 +4,6 @@ using System.IO;
 
 public partial class main_game : Node2D
 {
-	public static string p1name = "Player1";
-	public static string p2name = "Player2";
-
 	Button btn_rst;
 	Button btn_quit;
 	
@@ -18,8 +15,6 @@ public partial class main_game : Node2D
 
 	public void saveQuit()
 	{
-		String[] names = { p1name, p2name };
-		//File.WriteAllLinesAsync("LastNames.txt", names);
 		GlobalParameters.SaveNames();
 
 		GetTree().Quit();
